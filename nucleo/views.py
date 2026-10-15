@@ -92,3 +92,11 @@ def atualizar(req, id):
     colaborador.save()
     messages.success(req, 'Usuário atualizado com sucesso!')
     return redirect('nucleo-inicial')
+
+
+@require_POST
+def excluir(req, id):
+    colaborador = get_object_or_404(Colaborador, pk=id)
+    colaborador.delete()
+    messages.success(req, 'Usuário removido com sucesso!')
+    return redirect('nucleo-inicial')

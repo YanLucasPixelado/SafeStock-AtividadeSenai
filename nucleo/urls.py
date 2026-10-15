@@ -25,4 +25,5 @@ urlpatterns = [
     path('salvar', views.salvar, name='nucleo-salvar'),
     path('editar/<int:id>', views.tela_editar, name='nucleo-editar'),
     path('atualizar/<int:id>', views.atualizar, name='nucleo-atualizar'),
+    path('excluir/<int:id>', views.excluir, name='nucleo-excluir'),
 ]
