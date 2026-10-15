@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_POST
 
 from nucleo.models import Colaborador
@@ -60,3 +60,35 @@ def salvar(req):
     messages.success(req, 'Usuário cadastrado com sucesso!')
     # Após cadastrar, o sistema permanece na tela de cadastro
     return redirect('nucleo-criar')
+
+
+def tela_editar(req, id):
+    colaborador = get_object_or_404(Colaborador, pk=id)
+    return render(req, 'nucleo/forms/editar.html', {
+        'colaborador': colaborador,
+        'nome': colaborador.nome,
+        'telefone': colaborador.telefone,
+    })
+
+
+@require_POST
+def atualizar(req, id):
+    colaborador = get_object_or_404(Colaborador, pk=id)
+
+    nome = req.POST.get('nome', '').strip()
+    telefone = req.POST.get('telefone', '').strip()
+
+    problema = validar(nome, telefone)
+    if problema:
+        messages.error(req, f'Usuário não foi atualizado! {problema}')
+        return render(req, 'nucleo/forms/editar.html', {
+            'colaborador': colaborador,
+            'nome': nome,
+            'telefone': telefone,
+        })
+
+    colaborador.nome = nome
+    colaborador.telefone = telefone
+    colaborador.save()
+    messages.success(req, 'Usuário atualizado com sucesso!')
+    return redirect('nucleo-inicial')

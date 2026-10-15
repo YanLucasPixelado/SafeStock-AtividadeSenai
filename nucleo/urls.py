@@ -23,4 +23,6 @@ urlpatterns = [
     path('', views.home, name='nucleo-inicial'),
     path('criar', views.tela_criar, name='nucleo-criar'),
     path('salvar', views.salvar, name='nucleo-salvar'),
+    path('editar/<int:id>', views.tela_editar, name='nucleo-editar'),
+    path('atualizar/<int:id>', views.atualizar, name='nucleo-atualizar'),
 ]
