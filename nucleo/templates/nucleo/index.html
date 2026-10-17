@@ -19,6 +19,7 @@
                 <tr>
                     <th>Nome</th>
                     <th>Telefone</th>
+                    <th class="text-center">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,9 @@
                     <tr>
                         <td>{{ colaborador.nome }}</td>
                         <td>{{ colaborador.telefone }}</td>
+                        <td class="text-center text-nowrap">
+                            <a href="{% url 'nucleo-editar' colaborador.id %}" class="btn btn-sm btn-outline-warning">Editar</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
