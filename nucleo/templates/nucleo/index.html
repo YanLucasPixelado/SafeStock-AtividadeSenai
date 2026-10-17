@@ -6,29 +6,34 @@
 <div class="card-tela">
     <h1>Colaborador</h1>
 
-    <a class="btn btn-outline-success" href="{% url 'nucleo-criar' %}">+ CRIAR</a>
+    <form method="GET" action="{% url 'nucleo-inicial' %}" class="d-flex gap-2 mb-3">
+        <input type="search" name="q" value="{{ busca }}" class="form-control"
+               placeholder="Pesquisar pelo nome" aria-label="Pesquisar pelo nome">
+        <button type="submit" class="btn btn-outline-secondary">Pesquisar</button>
+        <a class="btn btn-outline-success text-nowrap" href="{% url 'nucleo-criar' %}">+ CRIAR</a>
+    </form>
 
-    <table class="table table-bordered mt-3">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Telefone</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for colaborador in colaboradores %}
+    {% if colaboradores %}
+        <table class="table table-bordered align-middle">
+            <thead>
                 <tr>
-                    <td>{{ colaborador.id }}</td>
-                    <td>{{ colaborador.nome }}</td>
-                    <td>{{ colaborador.telefone }}</td>
+                    <th>Nome</th>
+                    <th>Telefone</th>
                 </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="3">Nenhum colaborador encontrado.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for colaborador in colaboradores %}
+                    <tr>
+                        <td>{{ colaborador.nome }}</td>
+                        <td>{{ colaborador.telefone }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-box">
+            Desculpe, mas não encontramos dados correspondentes à sua busca<br>:(
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
