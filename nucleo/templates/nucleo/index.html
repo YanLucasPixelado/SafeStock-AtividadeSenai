@@ -28,6 +28,10 @@
                         <td>{{ colaborador.nome }}</td>
                         <td>{{ colaborador.telefone }}</td>
                         <td class="text-center text-nowrap">
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal" data-bs-target="#modal-remover"
+                                    data-nome="{{ colaborador.nome }}"
+                                    data-url="{% url 'nucleo-excluir' colaborador.id %}">Deletar</button>
                             <a href="{% url 'nucleo-editar' colaborador.id %}" class="btn btn-sm btn-outline-warning">Editar</a>
                         </td>
                     </tr>
@@ -40,4 +44,38 @@
         </div>
     {% endif %}
 </div>
+
+<!-- Modal de confirmação da exclusão -->
+<div class="modal fade" id="modal-remover" tabindex="-1" aria-labelledby="modal-remover-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form-remover" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-remover-titulo">Remover Usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-1">Você quer remover esse usuário?</p>
+                    <strong id="modal-remover-nome"></strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-outline-danger">Remover!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Preenche o modal com o colaborador escolhido e aponta o formulário para a URL de exclusão
+    document.getElementById('modal-remover').addEventListener('show.bs.modal', function (event) {
+        var botao = event.relatedTarget;
+        document.getElementById('modal-remover-nome').textContent = botao.getAttribute('data-nome');
+        document.getElementById('form-remover').setAttribute('action', botao.getAttribute('data-url'));
+    });
+</script>
 {% endblock %}
