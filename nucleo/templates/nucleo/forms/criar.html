@@ -1,31 +1,18 @@
-{% load static %}
+{% extends 'nucleo/base.html' %}
 
-<!DOCTYPE html>
-<html>
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>Adicionar Colaborador</h1>
-        <p></p>
-        <form action="{% url 'nucleo-salvar' %}" method="POST">
-            <div>
-                <label>Nome</label>
-                <input type="text" name="nome"/>
-            </div>
-            <div>
-                <label>Telefone</label>
-                <input type="text" name="telefone"/>
-            </div>
-            <div>
-                <input type="submit" value="Salvar"/>
-            </div>
-            {% csrf_token %}
-        </form>
-    </div>
-</body>
-</html>
+{% block title %}Adicionar Colaborador{% endblock %}
+
+{% block content %}
+<div class="card-tela">
+    <h1>Cadastro</h1>
+
+    <form action="{% url 'nucleo-salvar' %}" method="POST">
+        {% csrf_token %}
+        {% include 'nucleo/forms/_campos.html' %}
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-outline-success flex-grow-1">SALVAR</button>
+            <a href="{% url 'nucleo-inicial' %}" class="btn btn-outline-secondary">Voltar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
