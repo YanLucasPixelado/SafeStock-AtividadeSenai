@@ -32,7 +32,7 @@
                         <td class="text-center text-nowrap">
                             <button type="button" class="btn btn-sm btn-outline-danger"
                                     data-bs-toggle="modal" data-bs-target="#modal-remover"
-                                    data-nome="{{ epi.nome_epi.nome }}"
+                                    data-nome="{{ epi.nome_epi }}"
                                     data-url="{% url 'nucleo-excluir-epi' epi.id %}"> Deletar </button>
                             <a href="{% url 'nucleo-editar-epi' epi.id %}" class="btn btn-sm btn-outline-warning">Editar</a>
                         </td>

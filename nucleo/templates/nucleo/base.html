@@ -26,53 +26,15 @@
             <nav class="sidebar">
                 <div class="sidebar-menu">
                     {% with n=request.resolver_match.url_name %}
-                    <h2> Cadastros </h2>
-
-                    <!-- Page do Colaborador (Botão) no menu lateral esquerdo da page principal -->
-                    <a href="{% url 'nucleo-inicial' %}"
-                        class="{% if n == 'nucleo-inicial' or n == 'nucleo-criar' or n == 'nucleo-editar' %}active{% endif %}"> Colaborador </a>
-
-                    <!-- Page do Equipamentos (Botão) no menu lateral esquerdo da page principal -->
-                    <a href="{% url 'nucleo-epis-home' %}"
-                        class="{% if n == 'nucleo-epis-home' or n == 'nucleo-criar-epi' or n == 'nucleo-editar-epi' %}active{% endif %}"> Equipamentos </a>
-
-                    <h2> Relatórios </h2>
-                    <a href="{% url 'nucleo-emprestimos-home' %}"
-                        class="{% if n == 'nucleo-emprestimos-home' or n == 'nucleo-criar-emprestimo' %}active{% endif %}"> Empréstimos </a>
-                        
-                        
-
-                        <h2>Relatórios</h2>
-                        <a href="#" class="disabled" aria-disabled="true"> Empréstimo </a>
-
-                        <h2>Configurações</h2>
-                        <a href="#" class="disabled" aria-disabled="true"> Perfil </a>
-                        <a href="#" class="disabled" aria-disabled="true"> Sistema </a>
-                        {% endwith %}
-                </div>
-                <!--
-                <h2> Ação </h2>
-                <a href="{% url 'nucleo-epis-home' %}"
-                    class="{% if n == 'nucleo-epis-home' or n == 'nucleo-criar-epi' or n == 'nucleo-editar-epi' %}active{% endif %}"> Controle de EPI </a>
-
-                <h2> Relatórios </h2>
-                <a href="{% url 'nucleo-epis-home' %}"
-                    class="{% if n == 'nucleo-epis-home' or n == 'nucleo-criar-epi' or n == 'nucleo-editar-epi' %}active{% endif %}"> Empréstimos </a>
-
-                <h2> Configurações </h2>
-                <a href="{% url 'nucleo-epis-home' %}"
-                    class="{% if n == 'nucleo-epis-home' or n == 'nucleo-criar-epi' or n == 'nucleo-editar-epi' %}active{% endif %}"> Perfil </a>
-                
-                    <a href="{% url 'nucleo-epis-home' %}"
-                    class="{% if n == 'nucleo-epis-home' or n == 'nucleo-criar-epi' or n == 'nucleo-editar-epi' %}active{% endif %}"> Sistema </a>
-            -->
-                <!-- <div class="sidebar-menu">
                     <h2>Cadastros</h2>
-                    <a href="{% url 'nucleo-inicial' %}" class="active"> Colaborador </a>
-                    <a href="{% url 'nucleo-epis-home' %}" class="active"> Equipamentos </a>
+                    <a href="{% url 'nucleo-inicial' %}"
+                    class="{% if n == 'nucleo-inicial' or n == 'nucleo-criar' or n == 'nucleo-editar' %}active{% endif %}">Colaborador</a>
+                    <a href="{% url 'nucleo-epis-home' %}"
+                    class="{% if n == 'nucleo-epis-home' or n == 'nucleo-criar-epi' or n == 'nucleo-editar-epi' %}active{% endif %}">Equipamentos</a>
 
                     <h2>Ação</h2>
-                    <a href="#" class="disabled" aria-disabled="true">Controle de EPI</a>
+                    <a href="{% url 'nucleo-emprestimos-home' %}"
+                    class="{% if n == 'nucleo-emprestimos-home' or n == 'nucleo-criar-emprestimo' %}active{% endif %}">Controle de EPI</a>
 
                     <h2>Relatórios</h2>
                     <a href="#" class="disabled" aria-disabled="true">Empréstimo</a>
@@ -80,7 +42,8 @@
                     <h2>Configurações</h2>
                     <a href="#" class="disabled" aria-disabled="true">Perfil</a>
                     <a href="#" class="disabled" aria-disabled="true">Sistema</a>
-                </div> -->
+                        {% endwith %}
+                </div>
                 <a href="#" class="btn-sair">Sair</a>
             </nav>
 
