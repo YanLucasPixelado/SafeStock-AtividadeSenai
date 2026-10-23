@@ -1,0 +1,50 @@
+<div class="mb-3">
+    <label for="epi" class="form-label">Equipamento</label>
+    <select id="epi" name="epi" class="form-select">
+        <option value="">Selecione</option>
+        {% for e in epis %}
+        <option value="{{ e.id }}" {% if e.id|stringformat:"s" == epi_id %}selected{% endif %}>
+            {{ e.nome_epi }}
+        </option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="mb-3">
+    <label for="colaborador" class="form-label">Colaborador</label>
+    <select id="colaborador" name="colaborador" class="form-select">
+        <option value="">Selecione</option>
+        {% for c in colaboradores %}
+        <option value="{{ c.id }}" {% if c.id|stringformat:"s" == colaborador_id %}selected{% endif %}>
+            {{ c.nome }}
+        </option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="row mb-3">
+    <div class="col-6">
+        <label for="data_emprestimo" class="form-label">Data do empréstimo</label>
+        <input type="datetime-local" id="data_emprestimo" class="form-control"
+               value="{{ agora }}" disabled>
+    </div>
+    <div class="col-6">
+        <label for="data_prevista_devolucao" class="form-label">Data prevista da devolução</label>
+        <input type="datetime-local" id="data_prevista_devolucao" name="data_prevista_devolucao"
+               class="form-control" min="{{ agora }}" value="{{ data_prevista_devolucao|default:'' }}">
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <select id="status" name="status" class="form-select">
+        <option value="EMP" {% if status != 'FOR' %}selected{% endif %}>Emprestado</option>
+        <option value="FOR" {% if status == 'FOR' %}selected{% endif %}>Fornecido</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <label for="condicoes" class="form-label">Condições do equipamento no empréstimo</label>
+    <input type="text" id="condicoes" name="condicoes" class="form-control"
+           maxlength="200" value="{{ condicoes|default:'' }}">
+</div>

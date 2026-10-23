@@ -1,0 +1,93 @@
+{% extends 'nucleo/base.html' %}
+
+{% block title %} Empréstimos {% endblock %}
+
+{% block content %}
+<div class="card-tela">
+    <h1> Empréstimos </h1>
+
+    <form method="GET" action="{% url 'nucleo-emprestimos-home' %}" class="d-flex gap-2 mb-3">
+        <input type="search" name="q" value="{{ busca }}" class="form-control"
+               placeholder="Pesquisar pelo nome" aria-label="Pesquisar pelo nome">
+        <button type="submit" class="btn btn-outline-secondary">Pesquisar</button>
+        <a class="btn btn-outline-success text-nowrap" href="{% url 'nucleo-criar-emprestimo' %}"> + CRIAR </a>
+    </form>
+
+    {% if emprestimos %}
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th> Colaborador </th>
+                    <th> Equipamento </th>
+                    <th> Data do Empréstimo </th>
+                    <th> Data prevista de Devolução </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for emprestimo in emprestimos %}
+                    <tr>
+                        <td> {{ emprestimo.colaborador.nome }} </td>
+                        <td> {{ emprestimo.epi.nome_epi }} </td>
+                        <td> {{ emprestimo.data_emprestimo|date:"d/m/Y H:i" }} </td>
+                        <td> {{ emprestimo.data_prevista_devolucao|date:"d/m/Y H:i" }} </td>
+                        <!-- <td> {{ emprestimo.get_status_display }} </td> -->
+
+                        {% comment %}
+                        <!-- <td class="text-center text-nowrap">
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal" data-bs-target="#modal-remover"
+                                    data-nome="{{ epi.nome_epi.nome }}"
+                                    data-url="{% url 'nucleo-excluir-epi' epi.id %}"> Deletar </button>
+                            <a href="{% url 'nucleo-editar-epi' epi.id %}" class="btn btn-sm btn-outline-warning">Editar</a>
+                        </td> -->
+                        {% endcomment %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-box">
+            Desculpe, mas não encontramos dados correspondentes à sua busca <br> :(
+        </div>
+    {% endif %}
+</div>
+
+{% comment %}
+<!-- Modal de confirmação da exclusão
+<div class="modal fade" id="modal-remover" tabindex="-1" aria-labelledby="modal-remover-titulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="form-remover" method="POST" action="">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-remover-titulo"> Remover Equipamento </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="mb-1">Você quer remover esse equipamento?</p>
+                    <strong id="modal-remover-nome"></strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                    <button type="submit" class="btn btn-outline-danger"> Remover! </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+-->
+{% endcomment %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    /*
+    // Preenche o modal com o colaborador escolhido e aponta o formulário para a URL de exclusão
+    document.getElementById('modal-remover').addEventListener('show.bs.modal', function (event) {
+        var botao = event.relatedTarget;
+        document.getElementById('modal-remover-nome').textContent = botao.getAttribute('data-nome');
+        document.getElementById('form-remover').setAttribute('action', botao.getAttribute('data-url'));
+    });
+    */
+</script>
+{% endblock %}

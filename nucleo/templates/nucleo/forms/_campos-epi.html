@@ -1,9 +1,11 @@
+<!-- Campo de Nome para ser preenchido dentro da Parte de Criação dos EPis -->
 <div class="mb-3">
     <label for="nome" class="form-label"> Nome </label>
     <input type="text" id="nome_epi" name="nome_epi" class="form-control" maxlength="30"
         value="{{ nome_epi|default:'' }}" autofocus>
 </div>
 
+<!-- Campo da categoria dos EPIs para ser escolhido dentro da Criação de Equipamentos -->
 <div class="mb-3">
     <label for="categoria_epi" class="form-label"> Tipo </label>
     <select name="categoria_epi" class="form-select">
@@ -14,4 +16,11 @@
         </option>
         {% endfor %}
     </select>
+</div>
+
+<!-- Campo de Tamanho do EPI dentro da tela de Criação de Equipamento -->
+<div class="mb-3">
+    <label for="tamanho_epi" class="form-label"> Tamanho </label>
+    <input type="text" id="tamanho_epi" name="tamanho_epi" class="form-control" maxlength="30"
+        value="{{ tamanho_epi|default:'' }}" autofocus>
 </div>

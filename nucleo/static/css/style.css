@@ -41,7 +41,7 @@ h1 {
 }
 
 .sidebar h2 {
-    margin: 14px 0 4px;
+    margin: 8px 0 2px;
     font-size: 15px;
     font-weight: 700;
 }
@@ -98,4 +98,11 @@ h1 {
     padding: 24px;
     text-align: center;
     border: 1px solid #333;
+}
+
+.avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
 }

@@ -35,4 +35,11 @@ urlpatterns = [
     path('editar-epi/<int:id>', views.tela_editar_epi, name='nucleo-editar-epi'),
     path('atualizar-epi/<int:id>', views.atualizar_epi, name='nucleo-atualizar-epi'),
     path('excluir-epi/<int:id>', views.excluir_epi, name='nucleo-excluir-epi'),
+
+    # URLs relacionadas a parte de Empréstimos
+    path('emprestimo-home', views.emprestimos_home, name='nucleo-emprestimos-home'),
+    path('criar-emprestimo', views.tela_criar_emprestimo, name='nucleo-criar-emprestimo'),
+    path('salvar-emprestimo', views.salvar_emprestimo, name='nucleo-salvar-emprestimo'),
+
+
 ]

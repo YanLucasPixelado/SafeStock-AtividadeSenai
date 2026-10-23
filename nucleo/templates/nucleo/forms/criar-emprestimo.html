@@ -1,0 +1,18 @@
+{% extends 'nucleo/base.html' %}
+
+{% block title %} Adicionar Empréstimo {% endblock %}
+
+{% block content %}
+<div class="card-tela">
+    <h1>Cadastro</h1>
+
+    <form action="{% url 'nucleo-salvar-emprestimo' %}" method="POST">
+        {% csrf_token %}
+        {% include 'nucleo/forms/_campos-emprestimo.html' %}
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-outline-success flex-grow-1"> SALVAR </button>
+            <a href="{% url 'nucleo-emprestimos-home' %}" class="btn btn-outline-secondary"> Voltar </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

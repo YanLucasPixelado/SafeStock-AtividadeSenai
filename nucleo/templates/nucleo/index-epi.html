@@ -19,19 +19,21 @@
                 <tr>
                     <th> Nome </th>
                     <th> Tipo </th>
+                    <th> Tamanho </th>
                     <th class="text-center">Ação</th>
                 </tr>
             </thead>
             <tbody>
                 {% for epi in epis %}
                     <tr>
-                        <td>{{ epi.nome_epi }}</td>
-                        <td>{{ epi.categoria_epi.nome }}</td>
+                        <td> {{ epi.nome_epi }} </td>
+                        <td> {{ epi.categoria_epi.nome }} </td>
+                        <td> {{ epi.tamanho_epi }} </td>
                         <td class="text-center text-nowrap">
                             <button type="button" class="btn btn-sm btn-outline-danger"
                                     data-bs-toggle="modal" data-bs-target="#modal-remover"
-                                    data-nome="{{ colaborador.nome }}"
-                                    data-url="{% url 'nucleo-excluir-epi' epi.id %}">Deletar</button>
+                                    data-nome="{{ epi.nome_epi.nome }}"
+                                    data-url="{% url 'nucleo-excluir-epi' epi.id %}"> Deletar </button>
                             <a href="{% url 'nucleo-editar-epi' epi.id %}" class="btn btn-sm btn-outline-warning">Editar</a>
                         </td>
                     </tr>
