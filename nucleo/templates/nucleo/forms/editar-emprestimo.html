@@ -1,0 +1,38 @@
+{% extends 'nucleo/base.html' %}
+
+{% block title %} Editar Empréstimo {% endblock %}
+
+{% block content %}
+<div class="card-tela">
+    <h1>Atualizar</h1>
+
+    <form action="{% url 'nucleo-atualizar-emprestimo' emprestimo.id %}" method="POST">
+        {% csrf_token %}
+        {% include 'nucleo/forms/_campos-emprestimo-editar.html' %}
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-outline-success flex-grow-1"> SALVAR </button>
+            <a href="{% url 'nucleo-emprestimos-home' %}" class="btn btn-outline-secondary"> Cancelar </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Mostra "Data da devolução" e "Observação na devolução" só para Devolvido, Danificado ou Perdido
+    (function () {
+        var status = document.getElementById('status');
+        var bloco = document.getElementById('bloco-devolucao');
+        var data = document.getElementById('data_devolucao');
+        var statusComDevolucao = ['DEV', 'DAN', 'PER'];
+
+        function atualizar() {
+            var mostrar = statusComDevolucao.indexOf(status.value) !== -1;
+            bloco.classList.toggle('d-none', !mostrar);
+            data.required = mostrar;
+        }
+        status.addEventListener('change', atualizar);
+        atualizar();
+    })();
+</script>
+{% endblock %}

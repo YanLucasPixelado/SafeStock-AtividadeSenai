@@ -288,15 +288,26 @@ def validar_emprestimo(colaborador_id, epi_id, data_prevista, status, condicoes)
 
 
 def emprestimos_home(req):
-    busca = req.GET.get('q', '').strip()
-    emprestimos = Emprestimo.objects.select_related('colaborador', 'epi')
+    """Listagem / relatório de empréstimos. Os filtros são combinados com AND."""
+    colaborador = req.GET.get('colaborador', '').strip()
+    equipamento = req.GET.get('equipamento', '').strip()
+    status = req.GET.get('status', '').strip()
 
-    if busca:
-        emprestimos = emprestimos.filter(Q(epi__nome_epi__icontains=busca) | Q(colaborador__nome__icontains=busca))
+    emprestimos = Emprestimo.objects.select_related('colaborador', 'epi').order_by('-data_emprestimo')
+
+    if colaborador:
+        emprestimos = emprestimos.filter(colaborador__nome__icontains=colaborador)
+    if equipamento:
+        emprestimos = emprestimos.filter(epi__nome_epi__icontains=equipamento)
+    if status in Emprestimo.Status.values:
+        emprestimos = emprestimos.filter(status=status)
 
     return render(req, 'nucleo/index-emprestimo.html', {
         'emprestimos': emprestimos,
-        'busca': busca,
+        'colaborador': colaborador,
+        'equipamento': equipamento,
+        'status': status,
+        'status_opcoes': Emprestimo.Status.choices,
     })
 
 
@@ -371,4 +382,82 @@ def salvar_emprestimo(req):
     messages.success(req, 'Emprestimo cadastrado com sucesso!')
     return redirect('nucleo-criar-emprestimo')
 
-    
+
+# View da Tela de edição de um Empréstimo
+def tela_editar_emprestimo(req, id):
+    emprestimo = get_object_or_404(Emprestimo.objects.select_related('colaborador', 'epi'), pk=id)
+    return render(req, 'nucleo/forms/editar-emprestimo.html', contexto_edicao(emprestimo, {
+        'status': emprestimo.status,
+        'data_devolucao': formatar_datetime_local(emprestimo.data_devolucao),
+        'observacao_devolucao': emprestimo.observacao_devolucao,
+        'condicoes': emprestimo.condicoes,
+    }))
+
+
+def formatar_datetime_local(valor):
+    """Formata um datetime para o value de um <input type="datetime-local">."""
+    if not valor:
+        return ''
+    return timezone.localtime(valor).strftime('%Y-%m-%dT%H:%M')
+
+
+def contexto_edicao(emprestimo, extra):
+    contexto = {
+        'emprestimo': emprestimo,
+        'data_emprestimo': formatar_datetime_local(emprestimo.data_emprestimo),
+        'data_prevista_devolucao': formatar_datetime_local(emprestimo.data_prevista_devolucao),
+        'status_opcoes': Emprestimo.Status.choices,
+        'agora': timezone.localtime().strftime('%Y-%m-%dT%H:%M'),
+    }
+    contexto.update(extra)
+    return contexto
+
+
+# View de atualização do status de um Empréstimo
+# Colaborador, Equipamento, Data do empréstimo e Data prevista NÃO são lidos do POST
+# (ficam disabled no HTML e são ignorados aqui, impedindo qualquer alteração).
+@require_POST
+def atualizar_emprestimo(req, id):
+    emprestimo = get_object_or_404(Emprestimo, pk=id)
+
+    status = req.POST.get('status', '').strip()
+    condicoes = req.POST.get('condicoes', '').strip()
+    observacao = req.POST.get('observacao_devolucao', '').strip()
+    bruto = req.POST.get('data_devolucao', '').strip()
+
+    devolvido = status in ('DEV', 'DAN', 'PER')
+    data_devolucao = parse_datetime(bruto) if bruto else None
+    if data_devolucao and timezone.is_naive(data_devolucao):
+        data_devolucao = timezone.make_aware(data_devolucao)
+
+    problema = None
+    if status not in Emprestimo.Status.values:
+        problema = 'Status Inválido'
+    elif not condicoes:
+        problema = 'Preencher o campo: Condições do Equipamento'
+    elif len(observacao) > 200:
+        problema = 'O campo Observação aceita no máximo 200 caracteres'
+    elif devolvido:
+        if not data_devolucao:
+            problema = 'Preencher o campo: Data da devolução'
+        elif data_devolucao < emprestimo.data_emprestimo:
+            problema = 'A data da devolução não pode ser anterior à data do empréstimo'
+
+    if problema:
+        messages.error(req, f'Empréstimo não foi atualizado! {problema}')
+        return render(req, 'nucleo/forms/editar-emprestimo.html', contexto_edicao(emprestimo, {
+            'status': status,
+            'data_devolucao': bruto,
+            'observacao_devolucao': observacao,
+            'condicoes': condicoes,
+        }))
+
+    emprestimo.status = status
+    emprestimo.condicoes = condicoes
+    # Status Emprestado/Fornecido não possuem devolução: limpa os campos
+    emprestimo.data_devolucao = data_devolucao if devolvido else None
+    emprestimo.observacao_devolucao = observacao if devolvido else ''
+    emprestimo.save()
+
+    messages.success(req, 'Empréstimo atualizado com sucesso!')
+    return redirect('nucleo-emprestimos-home')

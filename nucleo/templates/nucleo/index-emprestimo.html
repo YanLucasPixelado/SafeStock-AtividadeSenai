@@ -4,23 +4,48 @@
 
 {% block content %}
 <div class="card-tela">
-    <h1> Empréstimos </h1>
-
-    <form method="GET" action="{% url 'nucleo-emprestimos-home' %}" class="d-flex gap-2 mb-3">
-        <input type="search" name="q" value="{{ busca }}" class="form-control"
-               placeholder="Pesquisar pelo nome" aria-label="Pesquisar pelo nome">
-        <button type="submit" class="btn btn-outline-secondary">Pesquisar</button>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0"> Empréstimos </h1>
         <a class="btn btn-outline-success text-nowrap" href="{% url 'nucleo-criar-emprestimo' %}"> + CRIAR </a>
+    </div>
+
+    <!-- Filtros do relatório (combinados com AND) -->
+    <form method="GET" action="{% url 'nucleo-emprestimos-home' %}" class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input type="search" name="colaborador" value="{{ colaborador }}" class="form-control"
+                   placeholder="Nome do colaborador" aria-label="Nome do colaborador">
+        </div>
+        <div class="col-md-3">
+            <input type="search" name="equipamento" value="{{ equipamento }}" class="form-control"
+                   placeholder="Nome do equipamento" aria-label="Nome do equipamento">
+        </div>
+        <div class="col-md-2">
+            <select name="status" class="form-select" aria-label="Status">
+                <option value="">Todos os status</option>
+                {% for valor, rotulo in status_opcoes %}
+                <option value="{{ valor }}" {% if valor == status %}selected{% endif %}>{{ rotulo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-outline-secondary flex-grow-1">Pesquisar</button>
+            <a href="{% url 'nucleo-emprestimos-home' %}" class="btn btn-outline-secondary">Limpar</a>
+        </div>
     </form>
 
     {% if emprestimos %}
+        <div class="table-responsive">
         <table class="table table-bordered align-middle">
             <thead>
                 <tr>
                     <th> Colaborador </th>
                     <th> Equipamento </th>
+                    <th> Status </th>
                     <th> Data do Empréstimo </th>
                     <th> Data prevista de Devolução </th>
+                    <th> Data da Devolução </th>
+                    <th> Observação </th>
+                    <th> Ações </th>
                 </tr>
             </thead>
             <tbody>
@@ -28,29 +53,24 @@
                     <tr>
                         <td> {{ emprestimo.colaborador.nome }} </td>
                         <td> {{ emprestimo.epi.nome_epi }} </td>
+                        <td> {{ emprestimo.get_status_display }} </td>
                         <td> {{ emprestimo.data_emprestimo|date:"d/m/Y H:i" }} </td>
                         <td> {{ emprestimo.data_prevista_devolucao|date:"d/m/Y H:i" }} </td>
+                        <td> {{ emprestimo.data_devolucao|date:"d/m/Y H:i"|default:"—" }} </td>
+                        <td> {{ emprestimo.observacao_devolucao|default:"—" }} </td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary"
+                               href="{% url 'nucleo-editar-emprestimo' emprestimo.id %}">Editar</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        </div>
     {% else %}
         <div class="empty-box">
             Desculpe, mas não encontramos dados correspondentes à sua busca <br> :(
         </div>
     {% endif %}
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    /*
-    // Preenche o modal com o colaborador escolhido e aponta o formulário para a URL de exclusão
-    document.getElementById('modal-remover').addEventListener('show.bs.modal', function (event) {
-        var botao = event.relatedTarget;
-        document.getElementById('modal-remover-nome').textContent = botao.getAttribute('data-nome');
-        document.getElementById('form-remover').setAttribute('action', botao.getAttribute('data-url'));
-    });
-    */
-</script>
 {% endblock %}

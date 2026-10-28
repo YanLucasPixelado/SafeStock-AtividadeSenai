@@ -1,0 +1,50 @@
+<!-- Campos bloqueados (disabled): não podem ser alterados na atualização -->
+<div class="mb-3">
+    <label class="form-label">Equipamento</label>
+    <input type="text" class="form-control" value="{{ emprestimo.epi.nome_epi }}" disabled>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Colaborador</label>
+    <input type="text" class="form-control" value="{{ emprestimo.colaborador.nome }}" disabled>
+</div>
+
+<div class="row mb-3">
+    <div class="col-6">
+        <label class="form-label">Data do empréstimo</label>
+        <input type="datetime-local" class="form-control" value="{{ data_emprestimo }}" disabled>
+    </div>
+    <div class="col-6">
+        <label class="form-label">Data prevista da devolução</label>
+        <input type="datetime-local" class="form-control" value="{{ data_prevista_devolucao }}" disabled>
+    </div>
+</div>
+
+<!-- Campos editáveis -->
+<div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <select id="status" name="status" class="form-select">
+        {% for valor, rotulo in status_opcoes %}
+        <option value="{{ valor }}" {% if valor == status %}selected{% endif %}>{{ rotulo }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div id="bloco-devolucao" class="d-none">
+    <div class="mb-3">
+        <label for="data_devolucao" class="form-label">Data da devolução</label>
+        <input type="datetime-local" id="data_devolucao" name="data_devolucao" class="form-control"
+               min="{{ data_emprestimo }}" value="{{ data_devolucao|default:'' }}">
+    </div>
+    <div class="mb-3">
+        <label for="observacao_devolucao" class="form-label">Observação na devolução</label>
+        <input type="text" id="observacao_devolucao" name="observacao_devolucao" class="form-control"
+               maxlength="200" value="{{ observacao_devolucao|default:'' }}">
+    </div>
+</div>
+
+<div class="mb-3">
+    <label for="condicoes" class="form-label">Condições do equipamento no empréstimo</label>
+    <input type="text" id="condicoes" name="condicoes" class="form-control"
+           maxlength="200" value="{{ condicoes|default:'' }}">
+</div>

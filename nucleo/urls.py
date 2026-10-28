@@ -40,6 +40,8 @@ urlpatterns = [
     path('emprestimo-home', views.emprestimos_home, name='nucleo-emprestimos-home'),
     path('criar-emprestimo', views.tela_criar_emprestimo, name='nucleo-criar-emprestimo'),
     path('salvar-emprestimo', views.salvar_emprestimo, name='nucleo-salvar-emprestimo'),
+    path('editar-emprestimo/<int:id>', views.tela_editar_emprestimo, name='nucleo-editar-emprestimo'),
+    path('atualizar-emprestimo/<int:id>', views.atualizar_emprestimo, name='nucleo-atualizar-emprestimo'),
 
 
 ]
