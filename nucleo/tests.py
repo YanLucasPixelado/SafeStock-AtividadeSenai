@@ -6,9 +6,13 @@ from django.utils import timezone
 
 from nucleo.models import CategoriaEpi, Colaborador, Emprestimo, Epi
 
+from django.contrib.auth import get_user_model
+
 
 class EmprestimoTests(TestCase):
     def setUp(self):
+        usuario = get_user_model().objects.create_user('teste', password='senha-de-teste-123')
+        self.client.force_login(usuario)
         cat = CategoriaEpi.objects.create(nome='Cabeça')
         self.ana = Colaborador.objects.create(nome='Ana', telefone='1')
         self.bia = Colaborador.objects.create(nome='Bia', telefone='2')
