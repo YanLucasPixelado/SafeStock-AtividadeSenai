@@ -17,7 +17,7 @@
             <span class="topbar-title">Home</span>
             <span class="topbar-user">
                 <img src="{% static 'images/usuario.jpg' %}" alt="Foto do Usuário" class="avatar">
-                Joao Silva
+                {{ user.get_full_name|default:user.username }}
             </span>
         </header>
 
@@ -44,7 +44,7 @@
                     <a href="#" class="disabled" aria-disabled="true">Sistema</a>
                         {% endwith %}
                 </div>
-                <a href="#" class="btn-sair">Sair</a>
+                <a href="{% url 'auth-logout' %}" class="btn-sair">Sair</a>
             </nav>
 
             <main class="content">

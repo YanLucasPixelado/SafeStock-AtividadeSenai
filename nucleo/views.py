@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 # Imprtação das Classes (Diferentes Entidades dentro do Sistema)
 from nucleo.models import Colaborador
@@ -48,6 +49,7 @@ def validar(nome, telefone):
     return None
 
 
+
 def home(req):
     busca = req.GET.get('q', '').strip()
 
@@ -63,6 +65,7 @@ def home(req):
 
 def tela_criar(req):
     return render(req, 'nucleo/forms/criar.html')
+
 
 
 @require_POST

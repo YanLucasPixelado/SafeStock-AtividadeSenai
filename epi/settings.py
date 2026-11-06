@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'nucleo',
+    'system_auth',
 ]
 
 MIDDLEWARE = [
@@ -46,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'system_auth.middleware.LoginObrigatorioMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -118,9 +120,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
 
 # Diretório usado pelo collectstatic em produção
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -136,3 +138,5 @@ from django.contrib.messages import constants as message_constants
 MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
+
+LOGIN_URL = 'auth-login'
